@@ -15,4 +15,9 @@ public class SaludoController {
     public String saludar2() {
         return "Soy el Mejor rolling update";
     }
+
+    @GetMapping(path = "/nuevo")
+    public String nuevo() {
+        return "soy nuevo";
+    }
 }
