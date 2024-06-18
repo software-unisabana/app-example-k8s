@@ -1,0 +1,66 @@
+name: Docker CIs with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2.9.0
+
+      - name: Execute Gradle build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bootJar          
+
+      - name: Execute Gradle build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bootJar
+      - name: Docker login
+        env:
+          DOCKER_USERNAME: danielsabana
+          DOCKER_PASSWORD: ${{ secrets.CLAVE }}
+        run : docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" docker.io
+      - name: Build Docker image with latest tag
+        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:${{ secrets.VERSION }}
+      - name: Publish dockerImage to docker hub
+        run: docker push danielsabana/otrodemo:${{ secrets.VERSION }}
+
+      - name: Update Version in Helm
+        run: |
+          git clone https://github.com/jeanvaes/k8s.app.com.git
+          cd k8s.app.com/Charts/chart1
+          sed -i "s/tag: $((${{ secrets.VERSION }}-1))/tag: ${{ secrets.VERSION }}/" values.yaml
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Commit and Push Changes
+        uses: actions-js/push@master
+        with:
+          directory: k8s.app.com
+          github_token: ${{ secrets.TOKEN }}
+          repository: jeanvaes/k8s.app.com
+          message: Version updated ${date}
+
+      - name: Update Version Number
+        uses: hmanzur/actions-set-secret@v2.0.0
+        with:
+          name: 'VERSION'
+          value: $((${{ secrets.VERSION }}+1))
+          repository: juangomezru/patrones-Estudiante
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
