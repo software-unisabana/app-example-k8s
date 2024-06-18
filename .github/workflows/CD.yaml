@@ -6,6 +6,9 @@ on:
 
 permissions:
   contents: read
+env:
+  new_version: ${{ secrets.VERSION }}+1
+  old_version: ${{ secrets.VERSION }}
 
 jobs:
   build:
@@ -37,15 +40,15 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.CLAVE }}
         run : docker login -u="danielsabana" -p="Daniel.28" docker.io
       - name: Build Docker image with latest tag
-        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:${{ secrets.VERSION }}+1
+        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:$new_version
       - name: Publish dockerImage to docker hub
-        run: docker push danielsabana/otrodemo:${{ secrets.VERSION }}+1
+        run: docker push danielsabana/otrodemo:$new_version
 
       - name: Update Version in Helm
         run: |
           git clone https://github.com/software-unisabana/helm-chart.git
           cd helm-chart/example-app
-          sed -i "s/tag: $((${{ secrets.VERSION }}))/tag: ${{ secrets.VERSION }}+1/" values.yaml
+          sed -i "s/tag: $old_version/tag: $new_version/" values.yaml
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
@@ -61,6 +64,6 @@ jobs:
         uses: hmanzur/actions-set-secret@v2.0.0
         with:
           name: 'VERSION'
-          value: $((${{ secrets.VERSION }}+1))
+          value: $new_version
           repository: software-unisabana/app-example-k8s
           token: ${{ secrets.TOKEN }}
