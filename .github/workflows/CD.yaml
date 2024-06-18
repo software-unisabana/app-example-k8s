@@ -40,9 +40,9 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.CLAVE }}
         run : docker login -u="danielsabana" -p="Daniel.28" docker.io
       - name: Build Docker image with latest tag
-        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:$new_version
+        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:$((new_version))
       - name: Publish dockerImage to docker hub
-        run: docker push danielsabana/otrodemo:$new_version
+        run: docker push danielsabana/otrodemo:$((new_version))
 
       - name: Update Version in Helm
         run: |
