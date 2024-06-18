@@ -63,4 +63,4 @@ jobs:
           name: 'VERSION'
           value: $((${{ secrets.VERSION }}+1))
           repository: software-unisabana/app-example-k8s
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TOKEN }}
