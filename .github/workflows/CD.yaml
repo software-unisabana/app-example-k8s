@@ -43,8 +43,8 @@ jobs:
 
       - name: Update Version in Helm
         run: |
-          git clone https://github.com/jeanvaes/k8s.app.com.git
-          cd k8s.app.com/Charts/chart1
+          git clone https://github.com/software-unisabana/helm-chart.git
+          cd helm-chart/example-app
           sed -i "s/tag: $((${{ secrets.VERSION }}-1))/tag: ${{ secrets.VERSION }}/" values.yaml
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
@@ -52,9 +52,9 @@ jobs:
       - name: Commit and Push Changes
         uses: actions-js/push@master
         with:
-          directory: k8s.app.com
+          directory: helm-chart
           github_token: ${{ secrets.TOKEN }}
-          repository: jeanvaes/k8s.app.com
+          repository: software-unisabana/helm-chart
           message: Version updated ${date}
 
       - name: Update Version Number
@@ -62,5 +62,5 @@ jobs:
         with:
           name: 'VERSION'
           value: $((${{ secrets.VERSION }}+1))
-          repository: juangomezru/patrones-Estudiante
+          repository: software-unisabana/app-example-k8s
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
