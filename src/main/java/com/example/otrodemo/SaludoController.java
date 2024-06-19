@@ -20,4 +20,9 @@ public class SaludoController {
     public String nuevo() {
         return "soy nuevo";
     }
+
+    @GetMapping(path = "/nuevo2")
+    public String nuevo2() {
+        return "soy nuevo2";
+    }
 }
