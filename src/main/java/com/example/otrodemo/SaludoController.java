@@ -22,6 +22,11 @@ public class SaludoController {
         return "Nuevo Slaudo";
     }
 
+    @GetMapping(path = "/otraCosa")
+    public String otracosa() {
+        return "otra cosa";
+    }
+
 
     @GetMapping(path = "/otro")
     public String saludar2() {
