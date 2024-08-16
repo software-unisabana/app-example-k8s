@@ -12,12 +12,16 @@ import java.util.List;
 @RestController
 public class SaludoController {
 
-
     @GetMapping(path = "/saludo")
     public String saludar() {
-
         return "Saludos desde Otro componente";
     }
+
+    @GetMapping(path = "/nuevo-saludo")
+    public String saludar3() {
+        return "Nuevo Slaudo";
+    }
+
 
     @GetMapping(path = "/otro")
     public String saludar2() {
