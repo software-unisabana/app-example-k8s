@@ -19,7 +19,7 @@ public class SaludoController {
 
     @GetMapping(path = "/nuevo-saludo")
     public String saludar3() {
-        return "Nuevo Slaudo";
+        return "Nuevo Slaudo desde la clase de arquitectura";
     }
 
 
