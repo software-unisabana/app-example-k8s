@@ -40,14 +40,14 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.CLAVE }}
         run : docker login -u="danielsabana" -p="Daniel.28" docker.io
       - name: Build Docker image with latest tag
-        run: docker build . --file Dockerfile --tag danielsabana/componente_patrones:$((new_version))
+        run: docker build . --file Dockerfile --tag danielsabana/componente_patrones:{{ env.GIT_SHA_SHORT }}
       - name: Publish dockerImage to docker hub
-        run: docker push danielsabana/componente_patrones:$((new_version))
+        run: docker push danielsabana/componente_patrones:{{ env.GIT_SHA_SHORT }}
 
       - name: Update Version in Helm
         run: |
           git@github.com:dani-saavedra/componente-patrones-k8s.git
-          sed -i "s/image: $((old_version))/tag: $((new_version))/" values.yaml
+           sed -i 's|image: .*$|image: $NEW_IMAGE_TAG|' componente-patrones-deployment.yaml
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
