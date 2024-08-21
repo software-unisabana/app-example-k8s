@@ -58,11 +58,3 @@ jobs:
           github_token: ${{ secrets.TOKEN }}
           repository: software-unisabana/helm-chart
           message: Version updated ${date}
-
-      - name: Update Version Number
-        uses: hmanzur/actions-set-secret@v2.0.0
-        with:
-          name: 'VERSION'
-          value: $new_version
-          repository: software-unisabana/app-example-k8s
-          token: ${{ secrets.TOKEN }}
