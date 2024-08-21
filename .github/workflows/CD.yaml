@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Print a message in shell
+        run: echo $((old_version))
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
@@ -40,15 +42,14 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.CLAVE }}
         run : docker login -u="danielsabana" -p="Daniel.28" docker.io
       - name: Build Docker image with latest tag
-        run: docker build . --file Dockerfile --tag danielsabana/otrodemo:$((new_version))
+        run: docker build . --file Dockerfile --tag danielsabana/componente_patrones:$((new_version))
       - name: Publish dockerImage to docker hub
-        run: docker push danielsabana/otrodemo:$((new_version))
+        run: docker push danielsabana/componente_patrones:$((new_version))
 
       - name: Update Version in Helm
         run: |
-          git clone https://github.com/software-unisabana/helm-chart.git
-          cd helm-chart/example-app
-          sed -i "s/tag: $((old_version))/tag: $((new_version))/" values.yaml
+          git@github.com:dani-saavedra/componente-patrones-k8s.git
+          sed -i "s/image: $((old_version))/tag: $((new_version))/" values.yaml
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
