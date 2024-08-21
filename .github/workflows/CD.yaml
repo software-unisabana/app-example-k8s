@@ -45,14 +45,7 @@ jobs:
         run: |
           git clone https://github.com/dani-saavedra/componente-patrones-k8s.git
           cd componente-patrones-k8s/
-          sed -i '' 's|image: danielsabana/componente-patrones:[^ ]*|image: danielsabana/componente-patrones:1|' componente-patrones-deployment.yaml 
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
+          sed -i '' 's|image: danielsabana/componente-patrones:[^ ]*|image: danielsabana/componente-patrones:v1|' componente-patrones-deployment.yaml  
+          git commit -m "Update deployment image"
+          git push
 
-      - name: Commit and Push Changes
-        uses: actions-js/push@master
-        with:
-          directory: helm-chart
-          github_token: ${{ secrets.TOKEN }}
-          repository: software-unisabana/helm-chart
-          message: Version updated ${date}
