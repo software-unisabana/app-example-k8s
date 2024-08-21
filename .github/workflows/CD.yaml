@@ -44,7 +44,8 @@ jobs:
       - name: Update Version in Deployment
         run: |
           git clone https://github.com/dani-saavedra/componente-patrones-k8s.git
-          sed -i 's|image: .*$|image: danielsabana/componente-patrones:${{ env.GIT_SHA_SHORT }}|' componente-patrones-deployment.yaml
+          cd componente-patrones-k8s
+          sed -i '' 's|image: danielsabana/componente-patrones:[^ ]*|image: danielsabana/componente-patrones:${{ env.GIT_SHA_SHORT }}|' componente-patrones-deployment.yaml 
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
