@@ -44,7 +44,7 @@ jobs:
       - name: Update Version in Deployment
         run: |
           git clone https://github.com/dani-saavedra/componente-patrones-k8s.git && cd componente-patrones-k8s/ 
-          sed -i '' 's|image: [^ ]*|image: danielsabana/componente-patrones:v1|' componente-patrones-deployment.yaml  
+          sed -i '' "s|image: [^ ]*|image: danielsabana/componente-patrones:v1|" componente-patrones-deployment.yaml  
           git commit -m "Update deployment image"
           git push
 
