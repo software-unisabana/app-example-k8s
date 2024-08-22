@@ -14,7 +14,7 @@ public class SaludoController {
 
     @GetMapping(path = "/saludo")
     public String saludar() {
-        return "Saludos desde Otro componente";
+        return "Saludos con proceso CD";
     }
 
     @GetMapping(path = "/nuevo-saludo")
