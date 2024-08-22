@@ -34,7 +34,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Push Docker image
         with:
-          image: danielsabana/componente-patrones
+          image: danielsabana/componente_patrones
           tags: ${{ env.GIT_SHA_SHORT }}
           registry: docker.io
           dockerfile: Dockerfile
@@ -65,7 +65,7 @@ jobs:
           git commit -m "Actualiza imagen a ${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}"
       - name: Push changes to external repo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Asegúrate de que este token tenga permisos de escritura en el repo externo
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           cd external-repo
           git push origin ${{ env.BRANCH }}
