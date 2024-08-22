@@ -24,7 +24,7 @@ public class SaludoController {
 
     @GetMapping(path = "/despedirse")
     public String adios() {
-        return "adios";
+        return "Adios desde argoCD";
     }
 
 
