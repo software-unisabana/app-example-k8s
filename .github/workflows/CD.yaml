@@ -35,7 +35,7 @@ jobs:
         name: Push Docker image
         with:
           image: danielsabana/componente_patrones
-          tags: ${{ env.GIT_SHA_SHORT }}
+          tags: ${{ github.sha }}
           registry: docker.io
           dockerfile: Dockerfile
           username: danielsabana
@@ -51,22 +51,21 @@ jobs:
         uses: mikefarah/yq@v4.44.3
       - name: Set new image tag
         env:
-          IMAGE_NAME: 'danielsabana/componente_patrones'
+          IMAGE_NAME: danielsabana/componente_patrones
           NEW_TAG: ${{ env.GIT_SHA_SHORT }}
         run: |
           cd componente-patrones-k8s
-          yq eval ".spec.template.spec.containers[0].image = \"${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}\"" -i componente-patrones-deployment.yaml
+          yq eval ".spec.template.spec.containers[0].image = \"${{ env.IMAGE_NAME }}:${{ github.sha }}\"" -i componente-patrones-deployment.yaml
       - name: Commit changes in external repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           cd componente-patrones-k8s
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "Actualiza imagen a ${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}"
-      - name: Push changes to external repo
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        run: |
-          cd componente-patrones-k8s
-          git push origin ${{ env.BRANCH }}
+          git commit -m "Actualiza imagen a ${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          git remote set-url origin https://dani-saavedra:${{ env.GITHUB_TOKEN }}@github.com/dani-saavedra/componente-patrones-k8s.git
+          git push origin main
+          
 
