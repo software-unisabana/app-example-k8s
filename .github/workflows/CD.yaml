@@ -47,8 +47,8 @@ jobs:
         run: |
           git clone --single-branch --branch ${{ env.BRANCH }} ${{ env.EXTERNAL_REPO }} componente-patrones-k8s
           cd componente-patrones-k8s
-      - name: Install yq
-        run: sudo apt-get install -y yq
+      - name: yq - portable yaml processor
+        uses: mikefarah/yq@v4.44.3
       - name: Set new image tag
         env:
           IMAGE_NAME: 'danielsabana/componente_patrones'
