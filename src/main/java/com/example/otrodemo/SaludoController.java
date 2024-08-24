@@ -17,6 +17,11 @@ public class SaludoController {
         return "Saludos con proceso CD con Argo";
     }
 
+    @GetMapping(path = "/clase")
+    public String clase() {
+        return "Clase patrones arquitectonicos";
+    }
+
     @GetMapping(path = "/nuevo-saludo")
     public String saludar3() {
         return "Nuevo Slaudo desde la clase de arquitectura";
